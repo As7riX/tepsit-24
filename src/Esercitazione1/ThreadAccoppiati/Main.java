@@ -25,7 +25,7 @@ public class Main {
         }
 
         //starting thread
-        for (Thread td[]: threads){
+        for (Thread[] td : threads){
             td[0].start();
             td[1].start();
         }

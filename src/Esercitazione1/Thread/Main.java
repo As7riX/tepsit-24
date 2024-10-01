@@ -3,7 +3,7 @@ package Esercitazione1.Thread;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
 
@@ -19,17 +19,12 @@ public class Main {
         //inizializzazione thread
         for (int i = 0; i < threads.length; i++) {
             TCounter counter1 = new TCounter(counter, nmax);
-
             threads[i] = new Thread(counter1);
         }
 
         //starting thread
         for (Thread td: threads){
             td.start();
-        }
-
-        for (int i = 0; i < threads.length; i++) {
-            threads[i].start();
         }
 
     }
