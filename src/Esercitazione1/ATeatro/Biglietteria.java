@@ -7,16 +7,16 @@ public class Biglietteria {
         this.cinema = cinema;
     }
 
-    public synchronized void acquistaBiglietto() {
-        boolean ris = trovaPostoLibero();
-        if (ris) {
+    public synchronized void acquistaBiglietto(int groupID) {
+        boolean ris = trovaPostoLibero(groupID);
+        /*if (ris) {
             System.out.println("Posto prenotato con successo.");
         } else {
             System.out.println("Nessun posto libero disponibile.");
-        }
+        }*/
     }
 
-    private boolean trovaPostoLibero() {
+    private boolean trovaPostoLibero(int gID) {
         // Ottieni le dimensioni della matrice
         int righe = cinema.getNFile();
         int colonne = cinema.getNPosti();
@@ -45,26 +45,22 @@ public class Biglietteria {
 
             for (int ripeti = 0; ripeti < 2; ripeti++) {
                 for (int passi = 0; passi < passiDaFare; passi++) {
-                    // Controlla se siamo dentro i limiti della matrice
-                    if (r >= 0 && r < righe && c >= 0 && c < colonne) {
-                        postiControllati++;  // Contiamo i posti visitati
 
-                        // Se troviamo un posto libero (false), prenotiamo e usciamo
-                        if (cinema.takePosto(r, c)) {
+                    if (r >= 0 && r < righe && c >= 0 && c < colonne) {
+                        postiControllati++;
+
+                        if (cinema.takePosto(r, c, gID)) {
                             ris = true;
                             break;
                         }
 
-                        // Diminuisci il numero totale di posti da controllare
                         totaleElementi--;
 
-                        // Controllo per evitare un ciclo infinito
                         if (totaleElementi <= 0) {
                             break;
                         }
                     }
 
-                    // Muoviti nella direzione attuale
                     int[] movimento = movimenti[direzione];
                     r += movimento[0];
                     c += movimento[1];
@@ -72,17 +68,12 @@ public class Biglietteria {
 
                 }
 
-                // Cambia direzione (cicla tra destra, giù, sinistra, su)
                 direzione = (direzione + 1) % 4;
             }
 
-            // Aumenta il numero di passi ogni due cambi di direzione
+
             passiDaFare++;
         }
-
-        // Output di debug per visualizzare quanti posti sono stati controllati
-        System.out.println("Posti controllati: " + postiControllati);
-        System.out.println("Posti rimanenti: " + totaleElementi);
 
         return ris;
     }

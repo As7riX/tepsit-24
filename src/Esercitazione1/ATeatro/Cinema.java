@@ -1,13 +1,25 @@
 package Esercitazione1.ATeatro;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Cinema {
 
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
+
+    HashMap<Integer, String> colori = new HashMap<Integer, String>(){{
+        put(0, "\u001B[31m");
+        put(1, "\u001B[32m");
+        put(2, "\u001B[33m");
+        put(3, "\u001B[34m");
+        put(4, "\u001B[35m");
+        put(5, "\u001B[36m");
+        put(6, "\u001B[37m");
+    }
+    };
 
     // Mappa posti
-    private boolean[][] posti;
+    private Posto[][] posti;
 
     // Numero di posti disponibili
     private int postiDisponibili;
@@ -16,10 +28,10 @@ public class Cinema {
     public Cinema(int file, int postiPerFila) {
 
         //creazione e reset posti
-        posti = new boolean[file][postiPerFila];
-        for (int i = 0; i < file; i++)
+        posti = new Posto[file][postiPerFila];
+        for (int i = 0; i < file ; i++)
             for (int j = 0; j < postiPerFila; j++)
-                posti[i][j] = false;
+                posti[i][j] = new Posto();
 
         postiDisponibili = file * postiPerFila;
     }
@@ -36,14 +48,15 @@ public class Cinema {
 
     //get status posto
     public boolean getStatusPosto(int fila, int n){
-        return posti[fila][n];
+        return posti[fila][n].getOccupato();
     }
 
-    public boolean takePosto(int fila, int n){
+    public boolean takePosto(int fila, int n, int gID){
         boolean r = false;
 
-        if(!posti[fila][n]){
-            posti[fila][n] = true;
+        if(!posti[fila][n].getOccupato()){
+            posti[fila][n].setOccupato(true);
+            posti[fila][n].setIdSpettatore(gID);
             postiDisponibili--;
             r = true;
         }
@@ -54,8 +67,8 @@ public class Cinema {
     public boolean releasePosto(int fila, int n){
         boolean r = false;
 
-        if (posti[fila][n]){
-            posti[fila][n] = false;
+        if (posti[fila][n].getOccupato()){
+            posti[fila][n].setOccupato(false);
             postiDisponibili++;
             r = true;
         }
@@ -63,22 +76,24 @@ public class Cinema {
         return r;
     }
 
-    // Restituisce il numero di posti disponibili
-    public int getPostiDisponibili() {
-        return postiDisponibili;
-    }
-
     //stampa la disposizione del cinema
     public void printPosti(){
-        System.out.println( ANSI_RESET + "Mappa posti cinema [Liberi: " + ANSI_GREEN + postiDisponibili + ANSI_RESET + " - Occupati: " + ANSI_RED + ((getNFile() * getNPosti()) - postiDisponibili) + ANSI_RESET + "]");
+        System.out.println( ANSI_RESET + "Mappa posti cinema [Liberi: " + colori.get(1) + postiDisponibili + ANSI_RESET + " - Occupati: " + colori.get(0) + ((getNFile() * getNPosti()) - postiDisponibili) + ANSI_RESET + "]");
 
         for (int i = 0; i < getNFile(); i++) {
             for (int j = 0; j < getNPosti(); j++) {
-                if (posti[i][j]) System.out.print(ANSI_RED + "☺ ");
-                else             System.out.print(ANSI_GREEN + "□ ");
+                if (posti[i][j].getOccupato())
+                    System.out.print(colori.get(posti[i][j].getIdSpettatore()) + "☺ ");
+                else  System.out.print(colori.get(6) + "□ ");
             }
 
             System.out.println(ANSI_RESET);
         }
+
+        for (int i = 0; i < 7; i++) {
+            System.out.print(colori.get(i) + "Thread " + i + ANSI_RESET + "  ");
+        }
+
+        System.out.println();
     }
 }

@@ -23,10 +23,10 @@ public class Main {
         Cinema cinema = new Cinema(15, 46);
         Biglietteria biglietteria = new Biglietteria(cinema);
 
-        Thread[] spettatori = new Thread[650];
+        Thread[] spettatori = new Thread[7];
 
         for (int i = 0; i < spettatori.length; i++) {
-            spettatori[i] = new Spettatore(biglietteria);
+            spettatori[i] = new Spettatore(biglietteria, i);
             spettatori[i].start();
         }
 
