@@ -1,6 +1,5 @@
 package Esercitazione2.TantiConsumatori;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 

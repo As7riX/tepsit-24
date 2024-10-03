@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Produttore extends Thread{
 
-    private Buffer buffer;
+    private final Buffer buffer;
 
     public Produttore(Buffer buffer){
         this.buffer = buffer;

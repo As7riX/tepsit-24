@@ -2,7 +2,7 @@ package Esercitazione2.TantiConsumatori;
 
 public class Consumatore extends Thread {
 
-    private Buffer buffer;
+    private final Buffer buffer;
 
     public Consumatore(Buffer buffer){
         this.buffer = buffer;
@@ -15,7 +15,7 @@ public class Consumatore extends Thread {
         int pos = 0;
 
         while (true){
-            int n = 0;
+            int n;
 
             try {
                 n = buffer.get();
