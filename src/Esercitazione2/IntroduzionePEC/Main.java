@@ -1,19 +1,13 @@
 package Esercitazione2.IntroduzionePEC;
 
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Buffer buffer = new Buffer(10);
 
-        System.out.print("Inserisci il numero di Thread: ");
-        int T = scanner.nextInt();
+        Thread produttore = new Thread(new ProduttoreTime(buffer));
+        Thread consumatore = new Thread(new ConsumatoreTime(buffer));
 
-        System.out.print("Inserisci il numero massimo: ");
-        int N = scanner.nextInt();
-
-
+        produttore.start();
+        consumatore.start();
     }
-
-
 }

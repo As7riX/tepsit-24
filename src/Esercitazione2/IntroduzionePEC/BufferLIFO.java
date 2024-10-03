@@ -3,11 +3,11 @@ package Esercitazione2.IntroduzionePEC;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Buffer {
+public class BufferLIFO {
     private final List<Integer> list;
     private final int maxSize;
 
-    public Buffer(int maxSize) {
+    public BufferLIFO(int maxSize) {
         list = new ArrayList<Integer>();
         this.maxSize = maxSize;
     }
@@ -33,9 +33,8 @@ public class Buffer {
             wait();
         }
 
-        int number = list.removeFirst();
+        int number = list.removeLast();
         notifyAll();
         return number;
     }
 }
-
