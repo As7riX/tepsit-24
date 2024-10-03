@@ -6,22 +6,38 @@ import java.util.List;
 
 public class Buffer {
 
-    private List<Integer> buffer;
-    
-    public Buffer(){
-        buffer = new ArrayList<Integer>();
+    protected final List<Integer> list;
+    protected final int maxSize;
+
+    public Buffer(int maxSize) {
+        list = new ArrayList<Integer>();
+        this.maxSize = maxSize;
     }
 
-    public void push(int n){
-        buffer.add(n);
+    // Metodo per inserire un numero nel buffer
+    public synchronized void put(int number) throws InterruptedException {
+
+        // Attesa se il buffer è pieno
+        while (list.size() == maxSize) {
+            //System.out.println("Buffer Pieno");
+            wait();
+        }
+
+        list.add(number);
+        notifyAll();
     }
 
-    public synchronized int pop(){
-        int n = -1025;
-        if (!buffer.isEmpty())
-            n = (Integer)buffer.remove(0);
+    // Metodo per consumare un numero dal buffer
+    public synchronized int get() throws InterruptedException {
+        // Attesa se il buffer è vuoto
+        while (list.isEmpty()) {
+            //System.out.println("Buffer Vuoto");
+            wait();
+        }
 
-        return n;
+        int number = list.removeFirst();
+        notifyAll();
+        return number;
     }
 
 

@@ -15,10 +15,13 @@ public class Consumatore extends Thread {
         int pos = 0;
 
         while (true){
-            int n = buffer.pop();
+            int n = 0;
 
-            //attesa valore in buffer
-            while (n == -1025) n = buffer.pop();
+            try {
+                n = buffer.get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             if (n > 0) {
                 values[pos] = n;

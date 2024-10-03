@@ -17,7 +17,11 @@ public class Produttore extends Thread{
         while (true){
             int n = random.nextInt(2048) - 1024;
 
-            buffer.push(n);
+            try {
+                buffer.put(n);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             if (n > 0) {
                 try {
